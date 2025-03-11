@@ -436,13 +436,7 @@ def webhook():
     bot.process_new_updates([update])
     return 'ok', 200
 
-
-# Установка вебхука
-def set_webhook():
-    bot.remove_webhook()
-    bot.set_webhook(url=f'https://{os.environ.get("HEROKU_APP_NAME")}.herokuapp.com/webhook')
-
-
 if __name__ == '__main__':
-    set_webhook()  # Устанавливаем вебхук при запуске
-    app.run(host='0.0.0.0', port=5000)
+    bot.remove_webhook()
+    bot.set_webhook(url=WEBHOOK_URL + '/webhook')
+    app.run(host='0.0.0.0', port=10000)  # Убедитесь, что порт указан
