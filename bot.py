@@ -4,7 +4,7 @@ from telebot import types
 import os
 
 
-API_TOKEN = '7637282666:AAH6fwKJxMKIs6FPixJs49AzkqGNKYMzrlM'
+API_TOKEN = os.environ.get('7637282666:AAH6fwKJxMKIs6FPixJs49AzkqGNKYMzrlM')
 WEBHOOK_URL = 'https://pearpleeng-render.onrender.com'
 bot = telebot.TeleBot(os.environ.get('7637282666:AAH6fwKJxMKIs6FPixJs49AzkqGNKYMzrlM'))
 app = Flask(__name__)
