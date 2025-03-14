@@ -438,6 +438,6 @@ def webhook():
 
 if __name__ == '__main__':
     bot.remove_webhook()
-    bot.set_webhook(url=WEBHOOK_URL + '/webhook')
+    bot.set_webhook(url=WEBHOOK_URL + 'https://pearpleeng-render.onrender.com')
     port = int(os.environ.get('PORT', 10000))  # Используйте порт из переменной окружения или 10000 по умолчанию
     app.run(host='0.0.0.0', port=port)
