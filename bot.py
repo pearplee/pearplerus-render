@@ -4,9 +4,9 @@ from telebot import types
 import os
 
 
-API_TOKEN = os.environ.get('7637282666:AAH6fwKJxMKIs6FPixJs49AzkqGNKYMzrlM')
+API_TOKEN = API_TOKEN = os.environ.get('API_TOKEN')
 WEBHOOK_URL = 'https://pearpleeng-render.onrender.com'
-bot = telebot.TeleBot(os.environ.get('7637282666:AAH6fwKJxMKIs6FPixJs49AzkqGNKYMzrlM'))
+bot = telebot.TeleBot(API_TOKEN)
 app = Flask(__name__)
 
 
@@ -439,4 +439,5 @@ def webhook():
 if __name__ == '__main__':
     bot.remove_webhook()
     bot.set_webhook(url=WEBHOOK_URL + '/webhook')
-    app.run(host='0.0.0.0', port=10000)  # Убедитесь, что порт указан
+    port = int(os.environ.get('PORT', 10000))  # Используйте порт из переменной окружения или 10000 по умолчанию
+    app.run(host='0.0.0.0', port=port)
