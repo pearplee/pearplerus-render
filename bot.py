@@ -4,8 +4,14 @@ from telebot import types
 import os
 
 
-API_TOKEN = API_TOKEN = os.environ.get('API_TOKEN')
+API_TOKEN = os.environ.get('API_TOKEN')
+if not API_TOKEN:
+    raise ValueError("Токен бота не найден. Убедитесь, что переменная окружения API_TOKEN установлена.")
+
+
 WEBHOOK_URL = 'https://pearpleeng-render.onrender.com'
+
+
 bot = telebot.TeleBot(API_TOKEN)
 app = Flask(__name__)
 
@@ -436,8 +442,8 @@ def webhook():
     bot.process_new_updates([update])
     return 'ok', 200
 
+# Регистрируем вебхук и запускаем сервер
 if __name__ == '__main__':
-    bot.remove_webhook()
-    bot.set_webhook(url=WEBHOOK_URL + 'https://pearpleeng-render.onrender.com')
-    port = int(os.environ.get('PORT', 10000))  # Используйте порт из переменной окружения или 10000 по умолчанию
-    app.run(host='0.0.0.0', port=port)
+    bot.remove_webhook()  # Удаляем старый вебхук, если он был
+    bot.set_webhook(url=WEBHOOK_URL + '/webhook')  # Регистрируем новый вебхук
+    app.run(host='0.0.0.0', port=10000)  # Запускаем сервер
