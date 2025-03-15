@@ -476,7 +476,7 @@ if __name__ == '__main__':
     except Exception as e:
             logging.error(f"Ошибка при установке вебхука: {e}")
 
-        # Запуск Flask
-        port = int(os.environ.get('PORT', 5000))
-        logging.info(f"Запуск Flask на порту: {port}")
-        app.run(host='0.0.0.0', port=port)
+    # Запуск Flask
+    port = int(os.environ.get('PORT', 5000))
+    logging.info(f"Запуск Flask на порту: {port}")
+    app.run(host='0.0.0.0', port=port)
