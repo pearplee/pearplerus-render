@@ -16,6 +16,11 @@ bot = telebot.TeleBot(API_TOKEN)
 app = Flask(__name__)
 
 
+@app.route('/')
+def home():
+    return "Hello, this is your Telegram bot!"
+
+
 user_data = {}
 
 
