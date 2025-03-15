@@ -473,7 +473,7 @@ if __name__ == '__main__':
             bot.remove_webhook()
             bot.set_webhook(url=WEBHOOK_URL + '/webhook')
             logging.info(f"Webhook установлен на: {WEBHOOK_URL + '/webhook'}")
-        except Exception as e:
+    except Exception as e:
             logging.error(f"Ошибка при установке вебхука: {e}")
 
         # Запуск Flask
