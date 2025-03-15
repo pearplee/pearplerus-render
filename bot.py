@@ -1,20 +1,26 @@
-from flask import Flask, request
+from flask import Flask, request, abort
 import telebot
 from telebot import types
 import os
+import logging
+
+
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 API_TOKEN = os.environ.get('API_TOKEN')
 if not API_TOKEN:
+    logging.error("Токен бота не найден. Убедитесь, что переменная окружения API_TOKEN установлена.")
     raise ValueError("Токен бота не найден. Убедитесь, что переменная окружения API_TOKEN установлена.")
 
 
-# Получаем WEBHOOK_URL из переменной окружения RENDER_EXTERNAL_HOSTNAME
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     WEBHOOK_URL = 'https://' + RENDER_EXTERNAL_HOSTNAME
 else:
     WEBHOOK_URL = 'https://pearpleeng-render.onrender.com'  # Или любой ваш дефолтный URL для тестов
+    logging.warning(f"RENDER_EXTERNAL_HOSTNAME не установлен, используется дефолтный WEBHOOK_URL: {WEBHOOK_URL}")
 
 
 bot = telebot.TeleBot(API_TOKEN)
@@ -448,17 +454,31 @@ def handle_message(message):
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    if request.headers.get('content-type') == 'application/json':
-        json_string = request.get_data().decode('utf-8')
-        update = telebot.types.Update.de_json(json_string)
-        bot.process_new_updates([update])
-        return 'ok', 200
-    else:
-        abort(403)  # Запрещаем доступ, если не application/json
+    logging.info("Webhook был вызван!")
+    try:
+        if request.headers.get('content-type') == 'application/json':
+            json_string = request.get_data().decode('utf-8')
+            logging.info(f"Получен JSON: {json_string}")
+            update = telebot.types.Update.de_json(json_string)
+            bot.process_new_updates([update])
+            return 'ok', 200
+        else:
+            logging.warning("Получен запрос с неправильным content-type")
+            abort(403)  # Запрещаем доступ, если не application/json
+    except Exception as e:
+        logging.exception(f"Ошибка в функции webhook: {e}")
+        return 'error', 500  # Возвращаем код ошибки, чтобы Telegram знал о проблеме
+
 
 # Регистрируем вебхук и запускаем сервер
 if __name__ == '__main__':
-    bot.remove_webhook()  # Удаляем старый вебхук, если он был
-    bot.set_webhook(url=WEBHOOK_URL + '/webhook')  # Регистрируем новый вебхук
+    try:
+        bot.remove_webhook()  # Удаляем старый вебхук, если он был
+        bot.set_webhook(url=WEBHOOK_URL + '/webhook')  # Регистрируем новый вебхук
+        logging.info(f"Webhook установлен на: {WEBHOOK_URL + '/webhook'}")
+    except Exception as e:
+        logging.error(f"Ошибка при установке вебхука: {e}")
+
     port = int(os.environ.get('PORT', 5000))  # Получаем порт из переменной окружения, 5000 - дефолтное значение
+    logging.info(f"Запуск Flask на порту: {port}")
     app.run(host='0.0.0.0', port=port)
