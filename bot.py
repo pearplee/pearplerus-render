@@ -68,6 +68,15 @@ if __name__ == '__main__':
         bot.send_message(message.chat.id, text, reply_markup=markup)
 
 
+    @bot.message_handler(func=lambda message: True)
+    def echo_all(message):
+        logging.info(f"Получено сообщение от пользователя {message.chat.id}: {message.text}")
+        try:
+            bot.reply_to(message, message.text)
+        except Exception as e:
+            logging.exception(f"Ошибка в обработчике echo_all: {e}")
+
+
     @bot.callback_query_handler(func=lambda call: True)
     def answer(call):
         if call.data == 'v put':
