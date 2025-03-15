@@ -9,7 +9,12 @@ if not API_TOKEN:
     raise ValueError("Токен бота не найден. Убедитесь, что переменная окружения API_TOKEN установлена.")
 
 
-WEBHOOK_URL = 'https://pearpleeng-render.onrender.com'
+# Получаем WEBHOOK_URL из переменной окружения RENDER_EXTERNAL_HOSTNAME
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    WEBHOOK_URL = 'https://' + RENDER_EXTERNAL_HOSTNAME
+else:
+    WEBHOOK_URL = 'https://pearpleeng-render.onrender.com'  # Или любой ваш дефолтный URL для тестов
 
 
 bot = telebot.TeleBot(API_TOKEN)
@@ -443,12 +448,17 @@ def handle_message(message):
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    update = telebot.types.Update.de_json(request.stream.read().decode('utf-8'))
-    bot.process_new_updates([update])
-    return 'ok', 200
+    if request.headers.get('content-type') == 'application/json':
+        json_string = request.get_data().decode('utf-8')
+        update = telebot.types.Update.de_json(json_string)
+        bot.process_new_updates([update])
+        return 'ok', 200
+    else:
+        abort(403)  # Запрещаем доступ, если не application/json
 
 # Регистрируем вебхук и запускаем сервер
 if __name__ == '__main__':
     bot.remove_webhook()  # Удаляем старый вебхук, если он был
     bot.set_webhook(url=WEBHOOK_URL + '/webhook')  # Регистрируем новый вебхук
-    app.run(host='0.0.0.0', port=10000)  # Запускаем сервер
+    port = int(os.environ.get('PORT', 5000))  # Получаем порт из переменной окружения, 5000 - дефолтное значение
+    app.run(host='0.0.0.0', port=port)
