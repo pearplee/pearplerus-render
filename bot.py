@@ -99,12 +99,24 @@ if __name__ == '__main__':
             bot.send_message(call.message.chat.id, 'Finish it! Someone is afraid of ghosts!')
         elif call.data == "put2":
             text = (
-                "Then follow the clues from the ghosts that will appear in this mystical service. Head to the starting "
-                "point of our adventure — the oldest square in the city, a contemporary of Barnaul, which for many years "
-                "was the administrative and cultural center of the city. The square lost its historical name in 1917. The "
+                "Head to the starting "
+                "point of our adventure — the oldest square in the city, which for many years "
+                "was the administrative and cultural center of the city. The square lost its historical name Sobornaya in 1917. The "
                 "main attraction of the square — the Peter and Paul Cathedral — was destroyed in 1935."
+                "What is the contemporary name of this square?"
             )
             bot.send_message(call.message.chat.id, text)
+            user_data[call.message.chat.id] = "new_1"
+        elif call.data == n1:
+            text = (
+                "Take a selfie so that the wooden facade of the former Administration of the Altai Mining District "
+                "is visible in the background. This wooden building was built in 1898 in the classical style, with "
+                "its love for symmetry, strict geometric forms, and light pilasters dividing the facade."
+            )
+            markup = types.InlineKeyboardMarkup()
+            markup.add(types.InlineKeyboardButton(text="I did it!", callback_data="z2"))
+            bot.send_message(call.message.chat.id, text, reply_markup=markup_inline)
+        elif call.data == 'z2':
             text = (
                 "You are in the most mystical, most mysterious place of the ancient mining city of Barnaul. Ghosts still "
                 "inhabit this place, carefully guarding the secrets of the past. One of the most mysterious stories of "
@@ -117,7 +129,14 @@ if __name__ == '__main__':
             user_data[call.message.chat.id] = "waiting_for_message_1"
         elif call.data == 'z3':
             text = (
-                "Hint: Polzunova St. 42 Mountain Pharmacy\nChristian Miller lived and worked in the building of the "
+                "Hint: Polzunova St. 42, Mountain Pharmacy"
+            )
+            markup = types.InlineKeyboardMarkup()
+            markup.add(types.InlineKeyboardButton(text="I'm here'!", callback_data="n2"))
+            bot.send_message(call.message.chat.id, text, reply_markup=markup_inline)
+        elif call.data == 'n2':
+            text = (
+                "Christian Miller lived and worked in the building of the "
                 "Mountain Pharmacy. Now it houses a tourist center with a museum, restaurant, and shop, but 200 years ago, "
                 "medicines were produced here. Barnaul used to be the center of pharmaceutical activity, and medicines "
                 "from here were supplied throughout the province. During the reconstruction of the pharmacy in 2010, "
@@ -273,7 +292,7 @@ if __name__ == '__main__':
             bot.send_message(call.message.chat.id, text)
             user_data[call.message.chat.id] = "waiting_for_message_12"
         elif call.data == 'z14':
-            photo = open('img/img3_jpg', 'rb')
+            photo = open('img/img_3.jpg', 'rb')
             text = (
                 "On Bolshaya Olonskaya Street, where settlers from the Russian North lived during the time of Akinfiy "
                 "Demidov, you must find another haunted house. You will learn the number of this house by solving a puzzle."
@@ -342,6 +361,15 @@ if __name__ == '__main__':
                 user_data[chat_id] = None
             else:
                 bot.send_message(chat_id, "Incorrect! The ghosts don't support you today...")
+        elif user_data.get(chat_id) == "new_1":
+            if (message.text.lower()).strip() == "sovetov square" or (message.text.lower()).strip() == "sovetov":
+                markup = types.InlineKeyboardMarkup()
+                markup.add(types.InlineKeyboardButton(text="Let's go!", callback_data="n1"))
+                markup.add(types.InlineKeyboardButton(text="We're shrinking! Bye!!", callback_data="otkaz"))
+                bot.send_message(message.chat.id, 'Great! The ghosts are on your side!', reply_markup=markup)
+                user_data[chat_id] = None
+            else:
+                bot.send_message(message.chat.id, "Incorrect! The ghosts don't support you today...")
         elif user_data.get(chat_id) == "waiting_for_message_2":
             if (message.text.lower()).strip() == "polzunova street" or (message.text.lower()).strip() == "polzunova":
                 markup = types.InlineKeyboardMarkup()
