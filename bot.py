@@ -115,7 +115,7 @@ if __name__ == '__main__':
             )
             markup = types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(text="I did it!", callback_data="z2"))
-            bot.send_message(call.message.chat.id, text, reply_markup=markup_inline)
+            bot.send_message(call.message.chat.id, text, reply_markup=markup)
         elif call.data == 'z2':
             text = (
                 "You are in the most mystical, most mysterious place of the ancient mining city of Barnaul. Ghosts still "
@@ -133,7 +133,7 @@ if __name__ == '__main__':
             )
             markup = types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(text="I'm here'!", callback_data="n2"))
-            bot.send_message(call.message.chat.id, text, reply_markup=markup_inline)
+            bot.send_message(call.message.chat.id, text, reply_markup=markup)
         elif call.data == 'n2':
             text = (
                 "Christian Miller lived and worked in the building of the "
