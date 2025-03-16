@@ -107,7 +107,7 @@ if __name__ == '__main__':
             )
             bot.send_message(call.message.chat.id, text)
             user_data[call.message.chat.id] = "new_1"
-        elif call.data == n1:
+        elif call.data == 'n1':
             text = (
                 "Take a selfie so that the wooden facade of the former Administration of the Altai Mining District "
                 "is visible in the background. This wooden building was built in 1898 in the classical style, with "
