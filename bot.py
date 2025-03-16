@@ -381,7 +381,7 @@ if __name__ == '__main__':
                 bot.send_message(message.chat.id, "Incorrect! The ghosts don't support you today...")
         elif user_data.get(chat_id) == "waiting_for_message_3":
             if (message.text.lower()).strip() == "the altai state local history museum" or \
-                    (message.text.lower()).strip() == "taslhm":
+                    (message.text.lower()).strip() == "taslhm" or (message.text.lower()).strip() == 'museum':
                 markup = types.InlineKeyboardMarkup()
                 markup.add(types.InlineKeyboardButton(text="Let's go!", callback_data="z5"))
                 markup.add(types.InlineKeyboardButton(text="We're shrinking! Bye!!", callback_data="otkaz"))
