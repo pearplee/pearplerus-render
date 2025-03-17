@@ -362,7 +362,7 @@ if __name__ == '__main__':
             else:
                 bot.send_message(chat_id, "Incorrect! The ghosts don't support you today...")
         elif user_data.get(chat_id) == "new_1":
-            if (message.text.lower()).strip() == "sovetov square" or (message.text.lower()).strip() == "sovetov":
+            if (message.text.lower()).strip() == "svobody square" or (message.text.lower()).strip() == "svobody":
                 markup = types.InlineKeyboardMarkup()
                 markup.add(types.InlineKeyboardButton(text="Let's go!", callback_data="n1"))
                 markup.add(types.InlineKeyboardButton(text="We're shrinking! Bye!!", callback_data="otkaz"))
