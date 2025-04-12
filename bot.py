@@ -17,7 +17,7 @@ RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     WEBHOOK_URL = 'https://' + RENDER_EXTERNAL_HOSTNAME
 else:
-    WEBHOOK_URL = 'https://pearpleeng-render.onrender.com'
+    WEBHOOK_URL = 'https://pearplerus-render.onrender.com'
     logging.warning("RENDER_EXTERNAL_HOSTNAME не установлен, используется дефолтный WEBHOOK_URL")
 
 # Инициализация telebot для webhook (threaded=False, parse_mode='HTML')
@@ -44,8 +44,8 @@ def webhook():
             return 'ok', 200
         else:
             abort(403)
-    except Exception as e:
-        logging.exception(f"Ошибка в webhook: {e}")
+    except Exception as err:
+        logging.exception(f"Ошибка в webhook: {err}")
         return 'error', 500
 
 
@@ -55,292 +55,314 @@ if __name__ == '__main__':
     @bot.message_handler(commands=['start'])
     def start(message):
         text = (
-            'Today you will embark on a dangerous, mysterious adventure through the ancient places of Barnaul, the secrets '
-            'of which are carefully guarded by the ghosts of the past. In Barnaul, there are many mystical places where '
-            'you can encounter ghosts. The ghosts of Barnaul are quite friendly and very sociable; at night, they like to '
-            'open refrigerators in search of something tasty, turn off the Internet, hide socks, and put townspeople into '
-            'a state of temporary amnesia.'
+            "Сегодня вы отправитесь в опасное, таинственное приключение по старинным "
+            "местам города Барнаула, тайны которого тщательно охраняются призраками прошлого. В Барнауле много мистичес"
+            "ких мест, где можно встретить привидения. Привидения Барнаула вполне дружелюбны и очень коммуникабельны, "
+            "по ночам любят открывать холодильники в поисках чего-то вкусненького, отключать Интернет, прятать носки и"
+            " вводить горожан в состояние временной амнезии."
         )
         markup = types.InlineKeyboardMarkup()
-        markup.add(types.InlineKeyboardButton("Let's go!", callback_data='v put'))
-        markup.add(types.InlineKeyboardButton("I'm fond of adventures!", callback_data='v put'))
-        markup.add(types.InlineKeyboardButton("OMG! I'm scared", callback_data='otkaz'))
+        markup.add(types.InlineKeyboardButton('В путь!', callback_data='v put'))
+        markup.add(types.InlineKeyboardButton('Ни дня без приключений!', callback_data='v put'))
+        markup.add(types.InlineKeyboardButton('Ой, что-то я боюсь...', callback_data='otkaz'))
         bot.send_message(message.chat.id, text, reply_markup=markup)
-
-
-    # @bot.message_handler(func=lambda message: True)
-    # def echo_all(message):
-    #     logging.info(f"Получено сообщение от пользователя {message.chat.id}: {message.text}")
-    #     try:
-    #         bot.reply_to(message, message.text)
-    #     except Exception as e:
-    #         logging.exception(f"Ошибка в обработчике echo_all: {e}")
 
 
     @bot.callback_query_handler(func=lambda call: True)
     def answer(call):
         if call.data == 'v put':
             text = (
-                "You will follow the footsteps of Barnaul's ghosts and decipher their messages from the past. Only in this "
-                "case will you receive a real letter from the past and be able to calm the mischievous spirits. Are you "
-                "ready to embark on a mystical journey?"
+                "Вы пройдёте по следам барнаульских привидений и разгадаете их "
+                "послания из прошлого. Только в этом случае вы получите настоящее письмо из прошлого и сможете усмирить"
+                " разыгравшихся духов. Вы готовы отправиться в мистическое путешествие?"
             )
             bot.delete_message(call.message.chat.id, call.message.message_id)
             markup_inline = types.InlineKeyboardMarkup()
-            first_arg = types.InlineKeyboardButton(text="I'm always ready!", callback_data='put2')
-            sec_arg = types.InlineKeyboardButton(text="Let's go!", callback_data="put2")
-            third_arg = types.InlineKeyboardButton(text="I'm not sure... Maybe go home...", callback_data="otkaz")
+            first_arg = types.InlineKeyboardButton(text="Всегда готов!", callback_data='put2')
+            sec_arg = types.InlineKeyboardButton(text="Вперёд за привидениями!", callback_data="put2")
+            third_arg = types.InlineKeyboardButton(text="Может, не надо...", callback_data="otkaz")
             markup_inline.add(first_arg)
             markup_inline.add(sec_arg)
             markup_inline.add(third_arg)
             bot.send_message(call.message.chat.id, text, reply_markup=markup_inline)
         elif call.data == 'otkaz':
             bot.delete_message(call.message.chat.id, call.message.message_id)
-            bot.send_message(call.message.chat.id, 'Finish it! Someone is afraid of ghosts!')
+            bot.send_message(call.message.chat.id, 'Расходимся! Здесь кто-то боится привидений!')
         elif call.data == "put2":
             text = (
-                "Head to the starting "
-                "point of our adventure — the oldest square in the city, which for many years "
-                "was the administrative and cultural center of the city. The square lost its historical name Sobornaya in 1917. The "
-                "main attraction of the square — the Peter and Paul Cathedral — was destroyed in 1935."
-                "What is the contemporary name of this square?"
+                "Тогда следуйте подсказкам от привидений, которые будут появляться "
+                "в этом мистическом сервисе. Отправляйтесь к старту нашего приключения – на старейшую площадь города, "
+                "ровесницу "
+                "Барнаула, которая много лет была административным и культурным центром города. Свое историческое название"
+                " площадь утратила в 1917 году. Главная достопримечательность площади – Петропавловский собор – была "
+                "разрушена"
+                "в 1935 году. "
             )
             bot.send_message(call.message.chat.id, text)
-            user_data[call.message.chat.id] = "new_1"
-        elif call.data == 'n1':
             text = (
-                "Take a selfie so that the wooden facade of the former Administration of the Altai Mining District "
-                "is visible in the background. This wooden building was built in 1898 in the classical style, with "
-                "its love for symmetry, strict geometric forms, and light pilasters dividing the facade."
-            )
-            markup = types.InlineKeyboardMarkup()
-            markup.add(types.InlineKeyboardButton(text="I did it!", callback_data="z2"))
-            bot.send_message(call.message.chat.id, text, reply_markup=markup)
-        elif call.data == 'z2':
-            text = (
-                "You are in the most mystical, most mysterious place of the ancient mining city of Barnaul. Ghosts still "
-                "inhabit this place, carefully guarding the secrets of the past. One of the most mysterious stories of "
-                "Barnaul is the story of the pharmacist who, according to legends, created the elixir of life. It is said "
-                "that together with his young daughter, he indeed became immortal, and their shadows can still be seen on "
-                "this street. Decipher the name of the pharmacist, and he will lead you to his workplace.\n"
-                "3-8-18-9-19-20-9-1-14   13-9-12-12-5-18."
+                "Вы находитесь в самом мистическом, самом таинственном месте старин"
+                "ного горного города Барнаула. Здесь до сих пор обитают привидения, которые тщательно хранят тайны "
+                "прошлого."
+                " Одной из самых загадочных историй Барнаула является история аптекаря, который, по преданиям, изготовил"
+                " эликсир "
+                "жизни. Говорят, что вместе со своей юной дочерью он действительно стал бессмертным и их тени до сих пор "
+                "можно"
+                "увидеть на этой улице. Расшифруйте имя аптекаря, и он приведет вас к месту своей работы. \n"
+                "23-18-10-19-20-10-1-15 14-10-13-13-6-18."
             )
             bot.send_message(call.message.chat.id, text)
             user_data[call.message.chat.id] = "waiting_for_message_1"
         elif call.data == 'z3':
             text = (
-                "Hint: Polzunova St. 42, Mountain Pharmacy"
-            )
-            markup = types.InlineKeyboardMarkup()
-            markup.add(types.InlineKeyboardButton(text="I'm here'!", callback_data="n2"))
-            bot.send_message(call.message.chat.id, text, reply_markup=markup)
-        elif call.data == 'n2':
-            text = (
-                "Christian Miller lived and worked in the building of the "
-                "Mountain Pharmacy. Now it houses a tourist center with a museum, restaurant, and shop, but 200 years ago, "
-                "medicines were produced here. Barnaul used to be the center of pharmaceutical activity, and medicines "
-                "from here were supplied throughout the province. During the reconstruction of the pharmacy in 2010, "
-                "mysterious dungeons were discovered here, where various pharmacy bottles and ampoules with an unknown "
-                "liquid were hidden. Who knows, maybe this is the elixir of life? You can visit the museum and see for "
-                "yourself. The ticket price is 80 rubles."
+                "Место назначения - ул.Ползунова 42, Горная Аптека.\n Христиан Миллер жил и работал в здан"
+                "ии Горной Аптеки. Сейчас здесь создан туристический центр с музеем, рестораном и магазином, а 200 лет "
+                "назад "
+                "здесь производились лекарства. Раньше Барнаул был центром фармацевтической деятельности, и лекарства "
+                "отсюда по"
+                "ставлялись по всей губернии. При реконструкции аптеки в 2010 году здесь были обнаружены таинственные "
+                "подземелья"
+                ", в которых были спрятаны различные аптечные склянки и ампулы с неизвестной жидкостью. Кто знает, может"
+                " это и "
+                "есть тот самый эликсир жизни? Вы можете заглянуть в музей и убедиться в этом самостоятельно. Стоимость"
+                " билета 80 рублей."
             )
             bot.send_message(call.message.chat.id, text)
             text = (
-                "Now, Christian Miller and his daughter invite you to take a walk along Petropavlovskaya Street. That's "
-                "what it used to be called, but the new name of the street is associated with a famous Barnaul inventor, "
-                "the developer of the first steam engine.\nQuestion: What is Petropavlovskaya Street called now?"
+                "Сейчас, Христиан Миллер и его дочь приглашают  вас прогуляться по "
+                "Петропаловской улице. Так она называлась раньше, а вот новое название улицы связано и известным " 
+                "барнаульским изобретателем, разработчиком первой паровой машины.\nВопрос: Как называется Петропавловская "
+                "улица сейчас?"
             )
             bot.send_message(call.message.chat.id, text)
             user_data[call.message.chat.id] = "waiting_for_message_2"
         elif call.data == 'z4':
             text = (
-                "The ghosts of the past invite you to solve the next riddle. You can find it near the building of the "
-                "Mining Laboratory — the main chemical laboratory of the Altai plants. This is where analyses of the mined "
-                "alloys of silver, copper, and gold were conducted before they were sent to St. Petersburg. This stone "
-                "building was constructed in 1851 (172 years ago!), and you can recognize it by the five Manchurian walnut "
-                "trees planted in front of its facade.\nQuestion: What is currently located in the building of the Mining "
-                "Laboratory?"
+                "Призраки прошлого приглашают вас разгадать следующую загадку. Най"
+                "ти ее можно у здания Горной лаборатории – главной химической лаборатории Алтайских заводов. Именно здесь"
+                " проводились анализы добытых на рудниках сплавов серебра, меди и золота до их отправки в Санкт-Петербург. "
+                "Это каменное здание было построено в 1851 году (172 года назад!), а узнать его можно по пяти высаженным "
+                "перед фасадом деревьям маньчжурского ореха.\nВопрос: Что в настоящий момент находится в здании Горной"
+                " лаборатории?"
 
             )
             bot.send_message(call.message.chat.id, text)
             user_data[call.message.chat.id] = "waiting_for_message_3"
         elif call.data == 'z5':
             text = (
-                "You are now at the local history museum, which is celebrating its 200th anniversary in 2023. However, "
-                "this site originally housed the mining laboratory, where chemical analyses of mined ore and smelted "
-                "metals were conducted. The mining laboratory appeared much later than the construction of the plant "
-                "itself, the establishment of which is closely tied to the history of Barnaul's founding.\nQuestion: Which "
-                "Russian entrepreneur, the founder of the mining industry in the Urals and Siberia, is associated with the "
-                "founding of Barnaul? The square, in the center of which stands a pillar commemorating the 100th "
-                "anniversary of mining in Altai, is named after him."
+                "Вы находитесь у краеведческого музея, который в 2023 году отмечает "
+                "свое 200летие. Но изначально на этом месте была горная лаборатория, в которой производился химический "
+                "анализ "
+                "добытой руды и выплавленных металлов. Горная лаборатория появилась гораздо позже строительства самого"
+                " завода,"
+                " появление которого тесно связывают с историей появления Барнаула.  Имя какого российского предпринимателя"
+                ", о"
+                "снователя горнодобывающей промышленности на Урале и в Сибири, связано с основанием города Барнаула?\n"
+                "Площадь"
+                ", в центральной части которого установлен столп в честь 100-летия горнорудного дела на Алтае, названа "
+                "в его честь."
             )
             bot.send_message(call.message.chat.id, text)
             user_data[call.message.chat.id] = "waiting_for_message_4"
         elif call.data == 'z6':
             text = (
-                "The most mystical and majestic place in the city is undoubtedly Demidovskaya Square. This is a place "
-                "where the shadow of the Demidov curse can still be felt.Akinfiy Demidov never visited Altai, but he is "
-                "well-known and respected here, with his image as the founder of the Altai industry carefully preserved in "
-                "the memory of generations. It was through his efforts that Barnaul, the second mining city in Russia "
-                "(after Yekaterinburg), was founded, becoming a new source of state revenue. Before his death, Akinfiy "
-                "Demidov cursed Barnaul and all its inhabitants. What is this curse? And how was it overcome?"
+                "Самым мистическим и одновременно величественным местом города по п"
+                "раву считается Демидовская площадь. Это место, где до сих пор ощущается тень демидовского проклятья. "
+                "Акинфий Дем"
+                "идов никогда не был на Алтае, но здесь его хорошо знают и чтут, бережно сохраняя образ родоначальника "
+                "алтайской"
+                " промышленности в памяти поколений. Именно его усилиями был основан Барнаул, второй в России (после "
+                "Екатеринб"
+                "урга) горный город, и новый источник государственной казны. Перед смертью Акинфий Демидов проклял Барнаул"
+                " и всех его жителей. В чем же заключается это проклятье? И как с ним справиться?"
             )
             bot.send_message(call.message.chat.id, text)
             markup = types.InlineKeyboardMarkup()
-            markup.add(types.InlineKeyboardButton("Open video", url="https://www.youtube.com/watch?v=5N9eUgfcL90"))
+            markup.add(types.InlineKeyboardButton("Открыть видео", url="https://www.youtube.com/watch?v=5N9eUgfcL90"))
             text = (
-                "Listen to "
-                "the story of the creation of Demidovskaya Square and answer the question: What helped overcome Demidov's "
-                "curse"
+                "Прослушайте историю создания Демидовской площади и ответьте на "
+                "вопрос: Что помогло справиться с проклятьем Демидова?"
             )
             bot.send_message(call.message.chat.id, text, reply_markup=markup)
             user_data[call.message.chat.id] = "waiting_for_message_5"
         elif call.data == 'z7':
             text = (
-                "There is a belief: if you walk around the Demidov pillar three times and leave a coin at its base each "
-                "time, you may become a wealthy person. Just keep in mind that wealth is understood differently by "
-                "everyone! Walk around the pillar three times and look carefully! During the reign of which emperor was "
-                "this monument erected to commemorate the 100th anniversary of mining in Altai?\nWrite the name of this "
-                "Russian emperor in the chat."
+                "Существует примета: если обойти Демидовский столп три раза и кажд"
+                "ый раз оставлять у его основания по монете, вы можете стать богатым человеком. Только имейте в виду, что"
+                " богат"
+                "ство каждый понимает по-своему! Обойдите вокруг столпа три раза да смотрите внимательно! В царствование"
+                " какого"
+                " императора был установлен этот памятник в честь 100-летия горнорудного дела на Алтае.\nНапишите в чат "
+                "имя этого российского императора"
             )
             bot.send_message(call.message.chat.id, text)
             user_data[call.message.chat.id] = "waiting_for_message_6"
         elif call.data == 'z8':
             text = (
-                "In 1771, Barnaul received the status of a 'Mining City,' and all buildings and structures constructed here"
-                "were for mining purposes. Thus, the Mining School, Mining Hospital, and an almshouse for disabled workers "
-                "of the Silver Smelting Plant appeared on Demidovskaya Square. Take a closer look—all the buildings "
-                "resemble each other in architecture: two-story, squat, with a solid foundation, likely capable of "
-                "withstanding even a strong earthquake. They were all designed by a St. Petersburg architect. No wonder "
-                "this place is called a corner of St. Petersburg.\nQuestion: What was located on the site of Demidovskaya "
-                "Square 300 years ago? Rumors say that about 700 kilograms of pure silver from the time of Akinfiy Demidov "
-                "are hidden there."
+                "В 1771 году Барнаул получил статус «Горный город» и все здания и "
+                "сооружения, которые строились здесь для целей горнорудного производства. Так здесь на Демидовской площади"
+                " появ"
+                "ились горное училище, горный госпиталь, богадельня для инвалидов Сереброплавильного завода. Приглядитесь"
+                " внимат"
+                "ельнее, все здания похожи друг на друга по архитектуре: двухэтажные, приземистые, с прочным фундаментом, "
+                "наверн"
+                "яка они могут выдержать даже очень сильное землетрясение. Все они создавались питерским архитектором. "
+                "Недаром "
+                "это место называют уголком Петербурга. \nВопрос: Что находилось на месте Демидовской площади 300 лет "
+                "назад? По"
+                "говаривают, что именно там спрятано около 700 килограммов чистого серебра времен Акинфия Демидова."
             )
             bot.send_message(call.message.chat.id, text)
 
             user_data[call.message.chat.id] = "waiting_for_message_7"
         elif call.data == 'z9':
             text = (
-                "According to legends, silver in Barnaul is not only deep underground but also on the surface. In fact, we"
-                "walk on streets paved with silver. Why? In the past, the central streets of Barnaul were paved with slag "
-                "left after silver processing. However, due to imperfect technology, particles of the precious metal "
-                "remained in the slag.Decipher the message from the shadow of Demidov – this is the original name of the "
-                "plant - and Demidov himself will guide you to a unique historical monument built in 1739."
+                "Согласно легендам, серебро в Барнауле не только глубоко под землей"
+                ", но и на поверхности. Фактически мы ходим по улицам, усыпанным серебром. Почему? Раньше центральные улицы"
+                " Барн"
+                "аула мостили шлаком, остававшимся после переработки серебра. Но так как технологический процесс был "
+                "несовершене"
+                "н, в шлаке оставались частички драгоценного металла. \nРасшифруйте послание тени Демидова – это "
+                "первоначальное " 
+                "название завода  – и сам Демидов проводит вас к уникальному историческому памятнику, построенному в "
+                "1739 году."
             )
             bot.send_message(call.message.chat.id, text)
             text = (
-                "FRSSU VPHOWLQI SODQW"
+                "VTLTGKFDBKMYSQPFDJL"
             )
             bot.send_message(call.message.chat.id, text)
             user_data[call.message.chat.id] = "waiting_for_message_8"
         elif call.data == 'z10':
             text = (
-                "Great! You are heading to the territory of the most famous silver smelting plant. In fact, the plant was "
-                "initially intended for copper smelting, but after the discovery of silver in Altai ore in 1746, it was "
-                "repurposed for silver smelting and became the largest silver smelting plant in Siberia."
+                "Отлично! Вы отправляетесь на территорию известнейшего сереброплав"
+                "ильного завода. На самом деле завод изначально был предназначен для выплавки меди, а после обнаружения в "
+                "алтайс"
+                "кой руде серебра в 1746 году был переоборудован для выплавки серебра и стал крупнейшим сереброплавильным"
+                " заводом Сибири."
             )
             bot.send_message(call.message.chat.id, text)
             text = (
-                "Close your eyes… Listen… It is said that the souls of the workers of this plant still cannot leave this "
-                "place and wander the plant to this day. In the evenings, the shadow of a man in dark clothing appears "
-                "here. Perhaps it is the spirit of Akinfiy Demidov himself, who originally owned these plants. Rumors say "
-                "that during his lifetime, Demidov hid many silver coins in the tunnels dug under the plant and is now "
-                "trying to protect them from prying eyes.\nQuestion: Which object has long been associated with the "
-                "otherworldly? This object has the ability to preserve the energies of people and things around it. It is "
-                "said that you can see the reflection of a ghost in it…"
+                "Закройте глаза… Прислушайтесь… Говорят, что души рабочих этого зав"
+                "ода до сих пор не могут покинуть этого места и по сей день бродят по заводу. По вечерам здесь появляется"
+                " тень "
+                "мужчины в темных одеждах. Возможно, это дух самого Акинфия Демидова, которому изначально и принадлежали"
+                " эти з"
+                "аводы. Поговаривают, что при жизни Демидов спрятал немало монет из серебра в вырытых под заводом штольнях"
+                " и се"
+                "йчас пытается защитить его от посторонних глаз. А какой предмет издревле связывали с потусторонним миром?"
             )
             bot.send_message(call.message.chat.id, text)
             text = (
-                "Find this object—it will help you answer Akinfiy Demidov's question: What was located in this building "
-                "during the Soviet years?\nCipher: YROTCAFHCTAMLUANRAB"
+                "Найдите этот предмет, он поможет вам ответить на вопрос Акинфия "
+                "Демидова, что располагалось в этом здании в советские годы. То, что так тревожит души рабочих завода..."
+                "\nАКИРБАФЯАНЧЕЧИПСЯАКСЬЛУАНРАБ"
             )
             bot.send_message(call.message.chat.id, text)
             user_data[call.message.chat.id] = "waiting_for_message_9"
         elif call.data == 'z11':
             text = (
-                "The residents of Barnaul have always worked hard and loved to relax. Return to the street of the famous "
-                "inventor and head to a beautiful building constructed in the pseudo-Russian style over 100 years ago. The "
-                "number of windows on its facade indicates the year of construction. Find out what is currently located in "
-                "this building."
+                "Жители Барнаула всегда трудились на славу, любили и отдохнуть. Воз"
+                "вращайтесь на улицу известного изобретателя и отправляйтесь к красивому зданию, построенному в "
+                "псевдорусском ст"
+                "иле более 100 лет назад. Количество окон на фасаде этого здания указывает на год постройки. Узнайте, "
+                "что находи"
+                "тся в этом здании в настоящее время."
             )
             bot.send_message(call.message.chat.id, text)
             user_data[call.message.chat.id] = "waiting_for_message_10"
         elif call.data == 'z12':
-            photo = open('img/img_1.png', 'rb')
+            photo1 = open('img/img.png', 'rb')
             text = (
-                "Balls, concerts, meetings, and theatrical performances were held here. But even this beautiful building "
-                "is not without its secrets and mysteries. Before 1900, a completely different structure stood here. Solve "
-                "the rebus—a message from the ghosts of the past—and find out on the foundation of which building the "
-                "People's House was built."
+                "Здесь проводили балы, концерты, собрания, ставили спекта"
+                "кли. Но и это красивое здание не обходится без тайн и загадок. До 1900 года здесь находилось совсем другое"
+                " соор"
+                "ужение. Разгадайте ребус – послание от призраков прошлого – и узнайте, на фундаменте какого здания был "
+                "построен Народный Дом."
             )
-            bot.send_photo(call.message.chat.id, photo, caption=text)
-            photo.close()
+            bot.send_photo(call.message.chat.id, photo1, caption=text)
             user_data[call.message.chat.id] = "waiting_for_message_11"
         elif call.data == 'z13':
             text = (
-                "Gradually, Barnaul became a major industrial city, attracting settlers from all over the Russian Empire. "
-                "Some streets have retained historical geographical names, but many were renamed. For example, Moskovsky "
-                "Prospekt became Lenin Prospekt, Tobolskaya Street became Leo Tolstoy Street, Tomskaya Street became "
-                "Korolenko Street, and Irkutskaya Street became Pushkin Street. However, one such street has preserved its "
-                "historical name. It is one of the oldest streets in the city, located near the banks of the Barnaulka "
-                "River. The settlers – well-known metallurgy workers of that time—came here from the Olonets region, from "
-                "the Olonka River (an area between Lake Ladoga and Lake Onega in Karelia). Today, there are two streets – "
-                "Bolshaya (Big) and Malaya (Small) – that have retained this name. These streets hold secrets of the past "
-                "and are in no hurry to part with them. Find these streets on the map, and you will receive a message from "
-                "the ghosts.\nWrite the names of the streets in the chat."
+                "Постепенно Барнаул становился крупным промышленным городом, местом "
+                "притяжения переселенцев со всей Российской Империи. Некоторые улицы сохраняют в своем названии "
+                "исторические ге"
+                "ографические названия, однако многие улицы были переименованы. Например, Московский проспект стал "
+                "проспектом Л"
+                "енина, Тобольская – улицей Льва Толстого, Томская улица – улицей Короленко, Иркутская – улицей Пушкина. "
+                "Однако "
+                "одна из таких улиц сохранила свое историческое название. Это одна из старейших улиц города, расположена у "
+                "бер"
+                "егов реки Барнаулки. Поселенцы – известные в те времена работники в части металлургии - прибыли сюда из "
+                "Олоне"
+                "цкого края, с реки Олонси (это район между Ладожским и Онежским озерами, в Карелии). Сейчас существуют "
+                "две ул"
+                "ицы  – Большая и Малая – сохранившие это название. Эти улицы хранят тайны прошлого и не спешат с ними "
+                "расстав"
+                "аться. Найдите на карте эти улицы и вы получите послание от привидений.\nНапишите в чат название улиц"
             )
             bot.send_message(call.message.chat.id, text)
             user_data[call.message.chat.id] = "waiting_for_message_12"
         elif call.data == 'z14':
-            photo = open('img/img_3.jpg', 'rb')
+            photo1 = open('img/img_3.jpg', 'rb')
             text = (
-                "On Bolshaya Olonskaya Street, where settlers from the Russian North lived during the time of Akinfiy "
-                "Demidov, you must find another haunted house. You will learn the number of this house by solving a puzzle."
+                "На Большой улице, где во времена Акинфия Демидова прожива"
+                "ли выходц"
+                "ы с русского севера, вам предстоит отыскать еще один дом с привидениями.  Номер этого дома вы узнаете, "
+                "решив головоломку."
             )
-            bot.send_photo(call.message.chat.id, photo, caption=text)
-            photo.close()
+            bot.send_photo(call.message.chat.id, photo1, caption=text)
             user_data[call.message.chat.id] = "waiting_for_message_13"
         elif call.data == 'z15':
             text = (
-                "At this location, at the address Bolshaya Olonskaya 38, stood the house of the merchant Zubov, where the "
-                "famous Russian writer Fyodor Mikhailovich Dostoevsky often visited during his Siberian exile. Perhaps "
-                "their shadows from the past still linger in this house. Perhaps their shadows can also be found in the "
-                "most mystical and ambiguous place in the city. Decipher its name, and boldly set off to meet the ghosts!"
+                "На этом месте по адресу Большая Олонская 38 стоял дом купца Зубова"
+                ", где во время своей сибирской ссылки часто бывал известный русский писатель Федор Михайлович "
+                "Достоевский. Возм"
+                "ожно, их тени из прошлого до сих пор живут в этом доме.\nВозможно, их тени можно встретить и в самом "
+                "мистическом "
+                "и неоднозначном месте города. Расшифруйте его название, и смело отправляйтесь на встречу с привидениями!"
             )
             bot.send_message(call.message.chat.id, text)
             text = (
-                "OBHPSOZ QBSL"
+                "ОБДПСОЬКРБСЛ"
             )
             bot.send_message(call.message.chat.id, text)
             user_data[call.message.chat.id] = "waiting_for_message_14"
         elif call.data == 'z16':
             text = (
-                "You are at the foot of Nagorny Park—the most ambiguous place in the city. In 1772, it was decided to open "
-                "a Nagorny Cemetery here. Over a century and a half, many famous townspeople, scientists, public figures, "
-                "merchants, and explorers of Altai were buried here. Climbing the stairs and counting the number of "
-                "flights, you will recall and forever remember the year of Barnaul's founding in the 18th century."
+                "Вы находитесь у подножия Нагорного парка – самого неоднозначного"
+                " места в городе. В 1772 году было принято решение об открытии в этом месте Нагорного кладбища. За полтора "
+                "века "
+                "здесь были похоронены многие известные горожане, учёные, общественные деятели, купцы, исследователи Алтая."
+                " Поднявшись по лестнице и сосчитав количество пролётов, вы вспомните и навсегда запомните год основания "
+                "Барнаула в 18 веке."
             )
             bot.send_message(call.message.chat.id, text)
             text = (
-                "Nagorny Park carefully preserves the history of the city. Here lie the eternal rest of the famous Russian "
-                "publicist, writer, and explorer of Altai, Nikolai Yadrintsev (streets in Barnaul, Omsk, Novosibirsk, and "
-                "Irkutsk are named after him); the physician, outstanding naturalist, geographer, and explorer of Altai, "
-                "Friedrich Gebler (a lane in Barnaul and the largest glacier of Mount Belukha are named after him); the "
-                "Russian public figure and folk educator Vasily Shtilke; and many others."
+                "Нагорный парк бережно хранит историю города. Здесь нашли вечный п"
+                "окой известный русский публицист, писатель, исследователь Алтая Николай Ядринцев (его именем названы улицы"
+                " в "
+                "Барнауле, Омске, Новосибирске, Иркутске);  врач, выдающийся естествоиспытатель, географ, исследователь "
+                "Алтая, "
+                "член-корреспондент РАН Фридрих Геблер (его именем назван переулок в Барнауле и самый большой ледник горы "
+                "Белух"
+                "а), русский общественный деятель, народный просветитель Василий Штильке и многие другие."
             )
             bot.send_message(call.message.chat.id, text)
             text = (
-                "Find the restored grave of the mining engineer, inventor-mechanic, and hydraulic engineer Kozma Frolov. "
-                "It was he who, from the mid-18th century, headed all gold mining operations in the Urals and Siberia and "
-                "supervised work at all Altai mines. At Kozma Frolov's grave, you will receive a message from the ghosts "
-                "of the past."
+                "Найдите восстановленную могилу горного инженера, изобретателя-меха"
+                "ника, гидротехника Козьмы Фролова. Именно он с середины 18 века возглавлял все золотые промыслы на Урале "
+                "и в Си"
+                "бири, был руководителем работ на всех рудниках Алтая. У могилы Козьмы Фролова вы и получите послание от "
+                "призраков прошлого."
             )
             bot.send_message(call.message.chat.id, text)
             text = (
-                '"Dear descendants!\nOn the banks of this remarkable river, we built a wonderful city.We bequeath to you '
-                'to preserve and protect the riches of our land.Remember us—we poured our souls into this city.Preserve '
-                'history, honor your ancestors!We promise to no longer disturb the residents of the city and will help you '
-                'multiply  your wealth!"'
+                'Дорогiя потомки! '
+                'На бѣрѣгу этой замѣчатѣльной рѣки мы построили чудѣсный городъ. ' 
+                'Завѣщаемъ вамъ хранiть и обѣрѣгать богатства нашаго крыя. '
+                'Помнiтѣ о насъ, мы вложили свою душу въ этотъ город. '
+                'Хранiтѣ исторiю, чтитѣ своихъ прѣдковъ! '
+                'Мы ѻбѣщаѥмъ больше не тревожить жителей города и бꙋдемъ помогать прїꙋмножать ваше богатство! '
             )
             bot.send_message(call.message.chat.id, text)
             user_data[call.message.chat.id] = "waiting_for_message_15"
@@ -353,165 +375,159 @@ if __name__ == '__main__':
         global user_data
         chat_id = message.chat.id
         if user_data.get(chat_id) == "waiting_for_message_1":
-            if (message.text.lower()).strip() == "christian miller":
+            if (message.text.lower()).strip() == "христиан миллер":
                 markup = types.InlineKeyboardMarkup()
-                markup.add(types.InlineKeyboardButton(text="Let's go!", callback_data="z3"))
-                markup.add(types.InlineKeyboardButton(text="We're shrinking! Bye!!", callback_data="otkaz"))
-                bot.send_message(message.chat.id, 'Great! The ghosts are on your side!', reply_markup=markup)
+                markup.add(types.InlineKeyboardButton(text="Идём дальше!", callback_data="z3"))
+                markup.add(types.InlineKeyboardButton(text="Всё! По домам!", callback_data="otkaz"))
+                bot.send_message(message.chat.id, 'Верно! привидения на вашей стороне!', reply_markup=markup)
                 user_data[chat_id] = None
             else:
-                bot.send_message(chat_id, "Incorrect! The ghosts don't support you today...")
-        elif user_data.get(chat_id) == "new_1":
-            if (message.text.lower()).strip() == "svobody square" or (message.text.lower()).strip() == "svobody":
-                markup = types.InlineKeyboardMarkup()
-                markup.add(types.InlineKeyboardButton(text="Let's go!", callback_data="n1"))
-                markup.add(types.InlineKeyboardButton(text="We're shrinking! Bye!!", callback_data="otkaz"))
-                bot.send_message(message.chat.id, 'Great! The ghosts are on your side!', reply_markup=markup)
-                user_data[chat_id] = None
-            else:
-                bot.send_message(message.chat.id, "Incorrect! The ghosts don't support you today...")
+                bot.send_message(chat_id, "Неправильный ответ! Видимо, привидения не на вашей стороне...")
         elif user_data.get(chat_id) == "waiting_for_message_2":
-            if (message.text.lower()).strip() == "polzunova street" or (message.text.lower()).strip() == "polzunova":
+            if (message.text.lower()).strip() == "ползунова":
                 markup = types.InlineKeyboardMarkup()
-                markup.add(types.InlineKeyboardButton(text="Let's go!", callback_data="z4"))
-                markup.add(types.InlineKeyboardButton(text="We're shrinking! Bye!!", callback_data="otkaz"))
-                bot.send_message(message.chat.id, 'Great! The ghosts are on your side!', reply_markup=markup)
+                markup.add(types.InlineKeyboardButton(text="Идём дальше!", callback_data="z4"))
+                markup.add(types.InlineKeyboardButton(text="Всё! По домам!", callback_data="otkaz"))
+                bot.send_message(message.chat.id, 'Верно! привидения на вашей стороне!', reply_markup=markup)
                 user_data[chat_id] = None
             else:
-                bot.send_message(message.chat.id, "Incorrect! The ghosts don't support you today...")
+                bot.send_message(message.chat.id, 'Неправильный ответ! Видимо, привидения не на вашей стороне...')
         elif user_data.get(chat_id) == "waiting_for_message_3":
-            if (message.text.lower()).strip() == "the altai state local history museum" or \
-                    (message.text.lower()).strip() == "taslhm" or (message.text.lower()).strip() == 'museum':
+            if (message.text.lower()).strip() == "алтайский государственный краеведческий музей" or \
+                    (message.text.lower()).strip() == "краеведческий музей" or (message.text.lower()).strip() == "агкм":
                 markup = types.InlineKeyboardMarkup()
-                markup.add(types.InlineKeyboardButton(text="Let's go!", callback_data="z5"))
-                markup.add(types.InlineKeyboardButton(text="We're shrinking! Bye!!", callback_data="otkaz"))
+                markup.add(types.InlineKeyboardButton(text="Идём дальше!", callback_data="z5"))
+                markup.add(types.InlineKeyboardButton(text="Всё! По домам!", callback_data="otkaz"))
                 text = (
-                    'Great! The ghosts are on your side!'
+                    'Верно! привидения на вашей стороне! Ваш путь лежит к Горной Аптеке'
+                    ' на улицу Ползунова дом 42.'
                 )
                 bot.send_message(message.chat.id, text, reply_markup=markup)
                 user_data[chat_id] = None
             else:
-                bot.send_message(chat_id, "Incorrect! The ghosts don't support you today...")
+                bot.send_message(chat_id, "Неправильный ответ! Видимо, привидения не на вашей стороне...")
         elif user_data.get(chat_id) == "waiting_for_message_4":
-            if (message.text.lower()).strip() == "demidov":
+            if (message.text.lower()).strip() == "демидов":
                 markup = types.InlineKeyboardMarkup()
-                markup.add(types.InlineKeyboardButton(text="Let's go!", callback_data="z6"))
-                markup.add(types.InlineKeyboardButton(text="We're shrinking! Bye!!", callback_data="otkaz"))
-                bot.send_message(message.chat.id, 'Great! The ghosts are on your side!', reply_markup=markup)
+                markup.add(types.InlineKeyboardButton(text="Идём дальше!", callback_data="z6"))
+                markup.add(types.InlineKeyboardButton(text="Всё! По домам!", callback_data="otkaz"))
+                bot.send_message(message.chat.id, 'Верно! привидения на вашей стороне!', reply_markup=markup)
                 user_data[chat_id] = None
             else:
-                bot.send_message(chat_id, "Incorrect! The ghosts don't support you today...")
+                bot.send_message(chat_id, "Неправильный ответ! Видимо, привидения не на вашей стороне...")
         elif user_data.get(chat_id) == "waiting_for_message_5":
-            if (message.text.lower()).strip() == "construction demidov pillar on the square" or \
-                    (message.text.lower()).strip() == "demidov pillar" or (message.text.lower()).strip() == \
-                    "demidov square":
+            if (message.text.lower()).strip() == "строительство демидовского столпа" or \
+                    (message.text.lower()).strip() == "демидовский столп" or (message.text.lower()).strip() == "агкм":
                 markup = types.InlineKeyboardMarkup()
-                markup.add(types.InlineKeyboardButton(text="Let's go!", callback_data="z7"))
-                markup.add(types.InlineKeyboardButton(text="We're shrinking! Bye!!", callback_data="otkaz"))
-                bot.send_message(message.chat.id, 'Great! The ghosts are on your side!', reply_markup=markup)
+                markup.add(types.InlineKeyboardButton(text="Идём дальше!", callback_data="z7"))
+                markup.add(types.InlineKeyboardButton(text="Всё! По домам!", callback_data="otkaz"))
+                bot.send_message(message.chat.id, 'Верно! привидения на вашей стороне!', reply_markup=markup)
                 user_data[chat_id] = None
             else:
-                bot.send_message(chat_id, "Incorrect. Listen again.")
+                bot.send_message(chat_id, "Неверно. Послушайте ещё раз про историю создания Демидовской площади")
         elif user_data.get(chat_id) == "waiting_for_message_6":
-            if (message.text.lower()).strip() == "alexander 1" or (message.text.lower()).strip() == 'alexandr 1' or \
-                    (message.text.lower()).strip() == 'alexander the first':
+            if (message.text.lower()).strip() == "александр 1" or (message.text.lower()).strip() == 'александр первый':
                 markup = types.InlineKeyboardMarkup()
-                markup.add(types.InlineKeyboardButton(text="Let's go!", callback_data="z8"))
-                markup.add(types.InlineKeyboardButton(text="We're shrinking! Bye!!", callback_data="otkaz"))
-                bot.send_message(message.chat.id, 'Great! The ghosts are on your side!', reply_markup=markup)
+                markup.add(types.InlineKeyboardButton(text="Идём дальше!", callback_data="z8"))
+                markup.add(types.InlineKeyboardButton(text="Всё! По домам!", callback_data="otkaz"))
+                bot.send_message(message.chat.id, 'Верно! привидения на вашей стороне!', reply_markup=markup)
                 user_data[chat_id] = None
             else:
-                bot.send_message(chat_id, "Incorrect! The ghosts don't support you today...")
+                bot.send_message(chat_id, "Неправильный ответ! Видимо, привидения не на вашей стороне...")
         elif user_data.get(chat_id) == "waiting_for_message_7":
-            if (message.text.lower()).strip() == "artificial lake" or (message.text.lower()).strip() == 'swamp':
+            if (message.text.lower()).strip() == "искусственное озеро" or (message.text.lower()).strip() == 'болото':
                 markup = types.InlineKeyboardMarkup()
-                markup.add(types.InlineKeyboardButton(text="Let's go!", callback_data="z9"))
-                markup.add(types.InlineKeyboardButton(text="We're shrinking! Bye!!", callback_data="otkaz"))
-                bot.send_message(message.chat.id, 'Great! The ghosts are on your side!', reply_markup=markup)
+                markup.add(types.InlineKeyboardButton(text="Идём дальше!", callback_data="z9"))
+                markup.add(types.InlineKeyboardButton(text="Всё! По домам!", callback_data="otkaz"))
+                bot.send_message(message.chat.id, 'Верно! привидения на вашей стороне!.', reply_markup=markup)
                 user_data[chat_id] = None
             else:
-                bot.send_message(chat_id, "Incorrect! The ghosts don't support you today...")
+                bot.send_message(chat_id, "Неправильный ответ! Видимо, привидения не на вашей стороне...")
         elif user_data.get(chat_id) == "waiting_for_message_8":
-            if (message.text.lower()).strip() == "copper smelting plant":
+            if (message.text.lower()).strip() == "медеплавильный завод":
                 markup = types.InlineKeyboardMarkup()
-                markup.add(types.InlineKeyboardButton(text="Let's go!", callback_data="z10"))
-                markup.add(types.InlineKeyboardButton(text="We're shrinking! Bye!!", callback_data="otkaz"))
-                bot.send_message(message.chat.id, 'Great! The ghosts are on your side!', reply_markup=markup)
+                markup.add(types.InlineKeyboardButton(text="Идём дальше!", callback_data="z10"))
+                markup.add(types.InlineKeyboardButton(text="Всё! По домам!", callback_data="otkaz"))
+                bot.send_message(message.chat.id, 'Верно! привидения на вашей стороне!.', reply_markup=markup)
                 user_data[chat_id] = None
             else:
-                bot.send_message(chat_id, "Incorrect! The ghosts don't support you today...")
+                bot.send_message(chat_id, "Неправильный ответ! Видимо, привидения не на вашей стороне...")
         elif user_data.get(chat_id) == "waiting_for_message_9":
-            if (message.text.lower()).strip() == "barnaul match factory":
+            if (message.text.lower()).strip() == "барнаульская спичечная фабрика":
                 markup = types.InlineKeyboardMarkup()
-                markup.add(types.InlineKeyboardButton(text="Let's go!", callback_data="z11"))
-                markup.add(types.InlineKeyboardButton(text="We're shrinking! Bye!!", callback_data="otkaz"))
-                bot.send_message(message.chat.id, 'Great! The ghosts are on your side!', reply_markup=markup)
+                markup.add(types.InlineKeyboardButton(text="Идём дальше!", callback_data="z11"))
+                markup.add(types.InlineKeyboardButton(text="Всё! По домам!", callback_data="otkaz"))
+                bot.send_message(message.chat.id, 'Верно! Привидения на вашей стороне!', reply_markup=markup)
                 user_data[chat_id] = None
             else:
-                bot.send_message(chat_id, "Incorrect! The ghosts don't support you today...")
+                bot.send_message(chat_id, "Неправильный ответ! Видимо, привидения не на вашей стороне...")
         elif user_data.get(chat_id) == "waiting_for_message_10":
-            if (message.text.lower()).strip() == "philharmonic" or (message.text.lower()).strip() == "the state \
-            philharmonic of the altai territory":
+            if (message.text.lower()).strip() == "филармония" or (message.text.lower()).strip() == "государственная филарм\
+            ония алтайского края":
                 markup = types.InlineKeyboardMarkup()
-                markup.add(types.InlineKeyboardButton(text="Let's go!", callback_data="z12"))
-                markup.add(types.InlineKeyboardButton(text="We're shrinking! Bye!!", callback_data="otkaz"))
+                markup.add(types.InlineKeyboardButton(text="Идём дальше!", callback_data="z12"))
+                markup.add(types.InlineKeyboardButton(text="Всё! По домам!", callback_data="otkaz"))
                 text = (
-                    "Correct. The State Philharmonic of the Altai Territory. On December 17, 1900, the People's House was "
-                    "opened here, which quickly became the center of cultural and educational life in the city."
+                    'Всё верно. Государственная филармония Алтайского края. 17 декабря '
+                    '1900 года здесь был открыт Народный дом, который очень быстро стал центром культурно-просветительской'
+                    ' жизни города.'
                 )
                 bot.send_message(message.chat.id, text, reply_markup=markup)
                 user_data[chat_id] = None
             else:
-                bot.send_message(chat_id, "Incorrect! The ghosts don't support you today...")
+                bot.send_message(chat_id, "Неправильный ответ! Видимо, привидения не на вашей стороне...")
         elif user_data.get(chat_id) == "waiting_for_message_11":
-            if (message.text.lower()).strip() == "guardhouse":
+            if (message.text.lower()).strip() == "гауптвахта":
                 markup = types.InlineKeyboardMarkup()
-                markup.add(types.InlineKeyboardButton(text="Let's go!", callback_data="z13"))
-                markup.add(types.InlineKeyboardButton(text="We're shrinking! Bye!!", callback_data="otkaz"))
+                markup.add(types.InlineKeyboardButton(text="Идём дальше!", callback_data="z13"))
+                markup.add(types.InlineKeyboardButton(text="Всё! По домам!", callback_data="otkaz"))
                 text = (
-                    'Indeed, the site of the modern Philharmonic was once occupied by the guardhouse—the city prison of the'
-                    'silver smelting plant. The prison building, office, and tool shop, located along Petropavlovskaya '
-                    'Street, were connected at that time by solid stone fences with decorative porticos.'
+                    'Действительно, на месте постройки современной Филармонии располагала'
+                    'сь гауптвахта – городская тюрьма – сереброплавильного завода. Здание тюрьмы, канцелярии и '
+                    'инструментального'
+                    ' магазина, расположенных по одной линии Петропавловской улицы, соединялись в те времена глухими '
+                    'каменными '
+                    'оградами с декоративными портиками.'
                 )
                 bot.send_message(message.chat.id, text, reply_markup=markup)
                 user_data[chat_id] = None
             else:
-                bot.send_message(chat_id, "Incorrect! The ghosts don't support you today...")
+                bot.send_message(chat_id, "Неправильный ответ! Видимо, привидения не на вашей стороне...")
         elif user_data.get(chat_id) == "waiting_for_message_12":
-            if (message.text.lower()).strip() == "bolshaya olonskaya, malaya olonskaya":
+            if (message.text.lower()).strip() == "большая олонская, малая олонская":
                 markup = types.InlineKeyboardMarkup()
-                markup.add(types.InlineKeyboardButton(text="Let's go!", callback_data="z14"))
-                markup.add(types.InlineKeyboardButton(text="We're shrinking! Bye!!", callback_data="otkaz"))
-                bot.send_message(message.chat.id, 'Great! The ghosts are on your side!', reply_markup=markup)
+                markup.add(types.InlineKeyboardButton(text="Идём дальше!", callback_data="z14"))
+                markup.add(types.InlineKeyboardButton(text="Всё! По домам!", callback_data="otkaz"))
+                bot.send_message(message.chat.id, 'Верно! Привидения на вашей стороне!', reply_markup=markup)
                 user_data[chat_id] = None
             else:
-                bot.send_message(chat_id, "Incorrect! The ghosts don't support you today...")
+                bot.send_message(chat_id, "Неправильный ответ! Видимо, привидения не на вашей стороне...")
         elif user_data.get(chat_id) == "waiting_for_message_13":
             if (message.text.lower()).strip() == "38":
                 markup = types.InlineKeyboardMarkup()
-                markup.add(types.InlineKeyboardButton(text="Let's go!", callback_data="z15"))
-                markup.add(types.InlineKeyboardButton(text="We're shrinking! Bye!!", callback_data="otkaz"))
-                bot.send_message(message.chat.id, 'Great! The ghosts are on your side!', reply_markup=markup)
+                markup.add(types.InlineKeyboardButton(text="Идём дальше!", callback_data="z15"))
+                markup.add(types.InlineKeyboardButton(text="Всё! По домам!", callback_data="otkaz"))
+                bot.send_message(message.chat.id, 'Верно! Привидения на вашей стороне!', reply_markup=markup)
                 user_data[chat_id] = None
             else:
-                bot.send_message(chat_id, "Incorrect! The ghosts don't support you today...")
+                bot.send_message(chat_id, "Неправильный ответ! Видимо, привидения не на вашей стороне...")
         elif user_data.get(chat_id) == "waiting_for_message_14":
-            if (message.text.lower()).strip() == "nagorny park":
+            if (message.text.lower()).strip() == "нагорный парк":
                 markup = types.InlineKeyboardMarkup()
-                markup.add(types.InlineKeyboardButton(text="Let's go!", callback_data="z16"))
-                markup.add(types.InlineKeyboardButton(text="We're shrinking! Bye!!", callback_data="otkaz"))
-                bot.send_message(message.chat.id, 'Great! The ghosts are on your side!', reply_markup=markup)
+                markup.add(types.InlineKeyboardButton(text="Идём дальше!", callback_data="z16"))
+                markup.add(types.InlineKeyboardButton(text="Всё! По домам!", callback_data="otkaz"))
+                bot.send_message(message.chat.id, 'Верно! Привидения на вашей стороне!', reply_markup=markup)
                 user_data[chat_id] = None
             else:
-                bot.send_message(chat_id, "Incorrect! The ghosts don't support you today...")
+                bot.send_message(chat_id, "Неправильный ответ! Видимо, привидения не на вашей стороне...")
 
 
     try:
-            bot.remove_webhook()
-            bot.set_webhook(url=WEBHOOK_URL + '/webhook')
-            logging.info(f"Webhook установлен на: {WEBHOOK_URL + '/webhook'}")
+        bot.remove_webhook()
+        bot.set_webhook(url=WEBHOOK_URL + '/webhook')
+        logging.info(f"Webhook установлен на: {WEBHOOK_URL + '/webhook'}")
     except Exception as e:
-            logging.error(f"Ошибка при установке вебхука: {e}")
+        logging.error(f"Ошибка при установке вебхука: {e}")
 
     # Запуск Flask
     port = int(os.environ.get('PORT', 5000))
