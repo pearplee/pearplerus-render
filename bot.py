@@ -90,15 +90,26 @@ if __name__ == '__main__':
             bot.send_message(call.message.chat.id, 'Расходимся! Здесь кто-то боится привидений!')
         elif call.data == "put2":
             text = (
-                "Тогда следуйте подсказкам от привидений, которые будут появляться "
-                "в этом мистическом сервисе. Отправляйтесь к старту нашего приключения – на старейшую площадь города, "
-                "ровесницу "
-                "Барнаула, которая много лет была административным и культурным центром города. Свое историческое название"
-                " площадь утратила в 1917 году. Главная достопримечательность площади – Петропавловский собор – была "
-                "разрушена"
-                "в 1935 году. "
+                'Тогда следуйте подсказкам от привидений, которые будут появляться в этом мистическом сервисе. '
+                'Отправляйтесь к старту нашего приключения – на старейшую площадь города, ровесницу Барнаула, которая '
+                'много лет была административным и культурным центром города. Свое историческое название – Соборная – '
+                'площадь утратила в 1917 году. Главная достопримечательность площади – Петропавловский собор – была '
+                'разрушена в 1935 году. Напишите современное название этой площади.'
             )
             bot.send_message(call.message.chat.id, text)
+            user_data[call.message.chat.id] = "waiting_for_message_one"
+        elif call.data == 'cmh':
+            text = (
+                'Сфотографируйтесь так, чтобы на заднем плане вашего селфи был виден деревянный фасад бывшего '
+                'Управления Алтайского горного округа. Это деревянное здание было построено в 1898 году в стиле '
+                'классицизма, с его любовью к симметрии, строгим геометрическим формам, к светлым пилястрам, '
+                'разделяющим фасад. '
+            )
+            markup_inline = types.InlineKeyboardMarkup()
+            first_arg = types.InlineKeyboardButton(text="Я сделал!", callback_data='one')
+            markup_inline.add(first_arg)
+            bot.send_message(call.message.chat.id, text, reply_markup=markup_inline)
+        elif call.data == 'one':
             text = (
                 "Вы находитесь в самом мистическом, самом таинственном месте старин"
                 "ного горного города Барнаула. Здесь до сих пор обитают привидения, которые тщательно хранят тайны "
@@ -387,6 +398,15 @@ if __name__ == '__main__':
             if (message.text.lower()).strip() == "ползунова":
                 markup = types.InlineKeyboardMarkup()
                 markup.add(types.InlineKeyboardButton(text="Идём дальше!", callback_data="z4"))
+                markup.add(types.InlineKeyboardButton(text="Всё! По домам!", callback_data="otkaz"))
+                bot.send_message(message.chat.id, 'Верно! привидения на вашей стороне!', reply_markup=markup)
+                user_data[chat_id] = None
+            else:
+                bot.send_message(message.chat.id, 'Неправильный ответ! Видимо, привидения не на вашей стороне...')
+        elif user_data.get(chat_id) == "waiting_for_message_one":
+            if (message.text.lower()).strip() == "площадь свободы":
+                markup = types.InlineKeyboardMarkup()
+                markup.add(types.InlineKeyboardButton(text="Идём дальше!", callback_data="cmh"))
                 markup.add(types.InlineKeyboardButton(text="Всё! По домам!", callback_data="otkaz"))
                 bot.send_message(message.chat.id, 'Верно! привидения на вашей стороне!', reply_markup=markup)
                 user_data[chat_id] = None
