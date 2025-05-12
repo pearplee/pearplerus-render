@@ -99,6 +99,7 @@ if __name__ == '__main__':
             bot.send_message(call.message.chat.id, text)
             user_data[call.message.chat.id] = "waiting_for_message_one"
         elif call.data == 'cmh':
+            photo = open('img/meria.jpg', 'rb')
             text = (
                 'Сфотографируйтесь так, чтобы на заднем плане вашего селфи был виден деревянный фасад бывшего '
                 'Управления Алтайского горного округа. Это деревянное здание было построено в 1898 году в стиле '
@@ -108,8 +109,9 @@ if __name__ == '__main__':
             markup_inline = types.InlineKeyboardMarkup()
             first_arg = types.InlineKeyboardButton(text="Я сделал!", callback_data='one')
             markup_inline.add(first_arg)
-            bot.send_message(call.message.chat.id, text, reply_markup=markup_inline)
+            bot.send_photo(call.message.chat.id, photo, caption=text, reply_markup=markup_inline)
         elif call.data == 'one':
+            photo = open('img/miller.jpg', 'rb')
             text = (
                 "Вы находитесь в самом мистическом, самом таинственном месте старин"
                 "ного горного города Барнаула. Здесь до сих пор обитают привидения, которые тщательно хранят тайны "
@@ -121,11 +123,18 @@ if __name__ == '__main__':
                 "увидеть на этой улице. Расшифруйте имя аптекаря, и он приведет вас к месту своей работы. \n"
                 "23-18-10-19-20-10-1-15 14-10-13-13-6-18."
             )
-            bot.send_message(call.message.chat.id, text)
+            bot.send_photo(call.message.chat.id, photo, caption=text)
             user_data[call.message.chat.id] = "waiting_for_message_1"
         elif call.data == 'z3':
+            photo = open('img/apteka.jpg', 'rb')
+            text = "Место назначения - ул.Ползунова 42, Горная Аптека."
+            markup_inline = types.InlineKeyboardMarkup()
+            first_arg = types.InlineKeyboardButton(text="Я здесь!", callback_data='lida')
+            markup_inline.add(first_arg)
+            bot.send_photo(call.message.chat.id, photo, caption=text, reply_markup=markup_inline)
+        elif call.data == 'lida':
             text = (
-                "Место назначения - ул.Ползунова 42, Горная Аптека.\n Христиан Миллер жил и работал в здан"
+                "Христиан Миллер жил и работал в здан"
                 "ии Горной Аптеки. Сейчас здесь создан туристический центр с музеем, рестораном и магазином, а 200 лет "
                 "назад "
                 "здесь производились лекарства. Раньше Барнаул был центром фармацевтической деятельности, и лекарства "
@@ -138,15 +147,17 @@ if __name__ == '__main__':
                 " билета 80 рублей."
             )
             bot.send_message(call.message.chat.id, text)
+            photo = open('img/street.jpg', 'rb')
             text = (
                 "Сейчас, Христиан Миллер и его дочь приглашают  вас прогуляться по "
                 "Петропаловской улице. Так она называлась раньше, а вот новое название улицы связано и известным " 
                 "барнаульским изобретателем, разработчиком первой паровой машины.\nВопрос: Как называется Петропавловская "
                 "улица сейчас?"
             )
-            bot.send_message(call.message.chat.id, text)
+            bot.send_photo(call.message.chat.id, photo, caption=text)
             user_data[call.message.chat.id] = "waiting_for_message_2"
         elif call.data == 'z4':
+            photo = open('img/museum.jpg', 'rb')
             text = (
                 "Призраки прошлого приглашают вас разгадать следующую загадку. Най"
                 "ти ее можно у здания Горной лаборатории – главной химической лаборатории Алтайских заводов. Именно здесь"
@@ -154,11 +165,11 @@ if __name__ == '__main__':
                 "Это каменное здание было построено в 1851 году (172 года назад!), а узнать его можно по пяти высаженным "
                 "перед фасадом деревьям маньчжурского ореха.\nВопрос: Что в настоящий момент находится в здании Горной"
                 " лаборатории?"
-
             )
-            bot.send_message(call.message.chat.id, text)
+            bot.send_photo(call.message.chat.id, photo, caption=text)
             user_data[call.message.chat.id] = "waiting_for_message_3"
         elif call.data == 'z5':
+            photo = open('img/demid.jpg', 'rb')
             text = (
                 "Вы находитесь у краеведческого музея, который в 2023 году отмечает "
                 "свое 200летие. Но изначально на этом месте была горная лаборатория, в которой производился химический "
@@ -172,9 +183,10 @@ if __name__ == '__main__':
                 ", в центральной части которого установлен столп в честь 100-летия горнорудного дела на Алтае, названа "
                 "в его честь."
             )
-            bot.send_message(call.message.chat.id, text)
+            bot.send_photo(call.message.chat.id, photo, caption=text)
             user_data[call.message.chat.id] = "waiting_for_message_4"
         elif call.data == 'z6':
+            photo = open('img/stolp.jpg', 'rb')
             text = (
                 "Самым мистическим и одновременно величественным местом города по п"
                 "раву считается Демидовская площадь. Это место, где до сих пор ощущается тень демидовского проклятья. "
@@ -186,7 +198,7 @@ if __name__ == '__main__':
                 "урга) горный город, и новый источник государственной казны. Перед смертью Акинфий Демидов проклял Барнаул"
                 " и всех его жителей. В чем же заключается это проклятье? И как с ним справиться?"
             )
-            bot.send_message(call.message.chat.id, text)
+            bot.send_photo(call.message.chat.id, photo, caption=text)
             markup = types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton("Открыть видео", url="https://www.youtube.com/watch?v=5N9eUgfcL90"))
             text = (
@@ -196,6 +208,7 @@ if __name__ == '__main__':
             bot.send_message(call.message.chat.id, text, reply_markup=markup)
             user_data[call.message.chat.id] = "waiting_for_message_5"
         elif call.data == 'z7':
+            photo = open('img/alex_1.jpg', 'rb')
             text = (
                 "Существует примета: если обойти Демидовский столп три раза и кажд"
                 "ый раз оставлять у его основания по монете, вы можете стать богатым человеком. Только имейте в виду, что"
@@ -205,9 +218,10 @@ if __name__ == '__main__':
                 " императора был установлен этот памятник в честь 100-летия горнорудного дела на Алтае.\nНапишите в чат "
                 "имя этого российского императора"
             )
-            bot.send_message(call.message.chat.id, text)
+            bot.send_photo(call.message.chat.id, photo, caption=text)
             user_data[call.message.chat.id] = "waiting_for_message_6"
         elif call.data == 'z8':
+            photo = open('img/silver.jpg', 'rb')
             text = (
                 "В 1771 году Барнаул получил статус «Горный город» и все здания и "
                 "сооружения, которые строились здесь для целей горнорудного производства. Так здесь на Демидовской площади"
@@ -222,7 +236,7 @@ if __name__ == '__main__':
                 "назад? По"
                 "говаривают, что именно там спрятано около 700 килограммов чистого серебра времен Акинфия Демидова."
             )
-            bot.send_message(call.message.chat.id, text)
+            bot.send_photo(call.message.chat.id, photo, caption=text)
 
             user_data[call.message.chat.id] = "waiting_for_message_7"
         elif call.data == 'z9':
@@ -252,6 +266,7 @@ if __name__ == '__main__':
                 " заводом Сибири."
             )
             bot.send_message(call.message.chat.id, text)
+            photo = open('img/mirror.jpg', 'rb')
             text = (
                 "Закройте глаза… Прислушайтесь… Говорят, что души рабочих этого зав"
                 "ода до сих пор не могут покинуть этого места и по сей день бродят по заводу. По вечерам здесь появляется"
@@ -262,15 +277,17 @@ if __name__ == '__main__':
                 " и се"
                 "йчас пытается защитить его от посторонних глаз. А какой предмет издревле связывали с потусторонним миром?"
             )
-            bot.send_message(call.message.chat.id, text)
+            bot.send_photo(call.message.chat.id, photo, caption=text)
+            photo = open('img/spich.jpg', 'rb')
             text = (
                 "Найдите этот предмет, он поможет вам ответить на вопрос Акинфия "
                 "Демидова, что располагалось в этом здании в советские годы. То, что так тревожит души рабочих завода..."
                 "\nАКИРБАФЯАНЧЕЧИПСЯАКСЬЛУАНРАБ"
             )
-            bot.send_message(call.message.chat.id, text)
+            bot.send_photo(call.message.chat.id, photo, caption=text)
             user_data[call.message.chat.id] = "waiting_for_message_9"
         elif call.data == 'z11':
+            photo = open('img/phil.jpg', 'rb')
             text = (
                 "Жители Барнаула всегда трудились на славу, любили и отдохнуть. Воз"
                 "вращайтесь на улицу известного изобретателя и отправляйтесь к красивому зданию, построенному в "
@@ -279,7 +296,7 @@ if __name__ == '__main__':
                 "что находи"
                 "тся в этом здании в настоящее время."
             )
-            bot.send_message(call.message.chat.id, text)
+            bot.send_photo(call.message.chat.id, photo, caption=text)
             user_data[call.message.chat.id] = "waiting_for_message_10"
         elif call.data == 'z12':
             photo1 = open('img/img.png', 'rb')
@@ -324,6 +341,7 @@ if __name__ == '__main__':
             bot.send_photo(call.message.chat.id, photo1, caption=text)
             user_data[call.message.chat.id] = "waiting_for_message_13"
         elif call.data == 'z15':
+            photo = open('img/38.jpg', 'rb')
             text = (
                 "На этом месте по адресу Большая Олонская 38 стоял дом купца Зубова"
                 ", где во время своей сибирской ссылки часто бывал известный русский писатель Федор Михайлович "
@@ -332,13 +350,14 @@ if __name__ == '__main__':
                 "мистическом "
                 "и неоднозначном месте города. Расшифруйте его название, и смело отправляйтесь на встречу с привидениями!"
             )
-            bot.send_message(call.message.chat.id, text)
+            bot.send_photo(call.message.chat.id, photo, caption=text)
             text = (
                 "ОБДПСОЬКРБСЛ"
             )
             bot.send_message(call.message.chat.id, text)
             user_data[call.message.chat.id] = "waiting_for_message_14"
         elif call.data == 'z16':
+            photo = open('img/park.jpg', 'rb')
             text = (
                 "Вы находитесь у подножия Нагорного парка – самого неоднозначного"
                 " места в городе. В 1772 году было принято решение об открытии в этом месте Нагорного кладбища. За полтора "
@@ -347,7 +366,11 @@ if __name__ == '__main__':
                 " Поднявшись по лестнице и сосчитав количество пролётов, вы вспомните и навсегда запомните год основания "
                 "Барнаула в 18 веке."
             )
-            bot.send_message(call.message.chat.id, text)
+            markup_inline = types.InlineKeyboardMarkup()
+            first_arg = types.InlineKeyboardButton(text="ОК", callback_data='ok1')
+            markup_inline.add(first_arg)
+            bot.send_photo(call.message.chat.id, photo, caption=text, reply_markup=markup_inline)
+        elif call.data == 'ok1':
             text = (
                 "Нагорный парк бережно хранит историю города. Здесь нашли вечный п"
                 "окой известный русский публицист, писатель, исследователь Алтая Николай Ядринцев (его именем названы улицы"
@@ -358,7 +381,12 @@ if __name__ == '__main__':
                 "Белух"
                 "а), русский общественный деятель, народный просветитель Василий Штильке и многие другие."
             )
-            bot.send_message(call.message.chat.id, text)
+            markup_inline = types.InlineKeyboardMarkup()
+            first_arg = types.InlineKeyboardButton(text="ОК", callback_data='ok2')
+            markup_inline.add(first_arg)
+            bot.send_message(call.message.chat.id, text, reply_markup=markup_inline)
+        elif call.data == 'ok2':
+            photo = open('img/grave.jpg', 'rb')
             text = (
                 "Найдите восстановленную могилу горного инженера, изобретателя-меха"
                 "ника, гидротехника Козьмы Фролова. Именно он с середины 18 века возглавлял все золотые промыслы на Урале "
@@ -366,7 +394,12 @@ if __name__ == '__main__':
                 "бири, был руководителем работ на всех рудниках Алтая. У могилы Козьмы Фролова вы и получите послание от "
                 "призраков прошлого."
             )
-            bot.send_message(call.message.chat.id, text)
+            markup_inline = types.InlineKeyboardMarkup()
+            first_arg = types.InlineKeyboardButton(text="Я здесь!", callback_data='ok3')
+            markup_inline.add(first_arg)
+            bot.send_photo(call.message.chat.id, photo, caption=text, reply_markup=markup_inline)
+        elif call.data == 'ok3':
+            photo = open('img/leter.jpg', 'rb')
             text = (
                 'Дорогiя потомки! '
                 'На бѣрѣгу этой замѣчатѣльной рѣки мы построили чудѣсный городъ. ' 
@@ -375,7 +408,7 @@ if __name__ == '__main__':
                 'Хранiтѣ исторiю, чтитѣ своихъ прѣдковъ! '
                 'Мы ѻбѣщаѥмъ больше не тревожить жителей города и бꙋдемъ помогать прїꙋмножать ваше богатство! '
             )
-            bot.send_message(call.message.chat.id, text)
+            bot.send_photo(call.message.chat.id, photo, caption=text)
             user_data[call.message.chat.id] = "waiting_for_message_15"
 
         bot.answer_callback_query(call.id)
