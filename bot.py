@@ -201,13 +201,16 @@ if __name__ == '__main__':
             )
             bot.send_photo(call.message.chat.id, photo, caption=text)
             markup = types.InlineKeyboardMarkup()
-            markup.add(types.InlineKeyboardButton("Открыть видео", url="https://www.youtube.com/watch?v=5N9eUgfcL90"))
+            markup.add(types.InlineKeyboardButton("Открыть видео", callback_data='video'))
             text = (
                 "Прослушайте историю создания Демидовской площади и ответьте на "
                 "вопрос: Что помогло справиться с проклятьем Демидова?"
             )
             bot.send_message(call.message.chat.id, text, reply_markup=markup)
             user_data[call.message.chat.id] = "waiting_for_message_5"
+        elif call.data == 'video':
+            with open('img/video.mp4', 'rb') as video_file:
+                bot.send_video(message.chat.id, video_file)
         elif call.data == 'z7':
             photo = open('img/alex_1.jpg', 'rb')
             text = (
