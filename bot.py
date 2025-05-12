@@ -89,6 +89,7 @@ if __name__ == '__main__':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             bot.send_message(call.message.chat.id, 'Расходимся! Здесь кто-то боится привидений!')
         elif call.data == "put2":
+            photo = open('img/svo.jpg', 'rb')
             text = (
                 'Тогда следуйте подсказкам от привидений, которые будут появляться в этом мистическом сервисе. '
                 'Отправляйтесь к старту нашего приключения – на старейшую площадь города, ровесницу Барнаула, которая '
@@ -96,7 +97,7 @@ if __name__ == '__main__':
                 'площадь утратила в 1917 году. Главная достопримечательность площади – Петропавловский собор – была '
                 'разрушена в 1935 году. Напишите современное название этой площади.'
             )
-            bot.send_message(call.message.chat.id, text)
+            bot.send_photo(call.message.chat.id, photo, caption=text)
             user_data[call.message.chat.id] = "waiting_for_message_one"
         elif call.data == 'cmh':
             photo = open('img/meria.jpg', 'rb')
