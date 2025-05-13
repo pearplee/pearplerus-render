@@ -201,7 +201,7 @@ if __name__ == '__main__':
             )
             bot.send_photo(call.message.chat.id, photo, caption=text)
             markup = types.InlineKeyboardMarkup()
-            markup.add(types.InlineKeyboardButton("Открыть видео", callback_data='video'))
+            markup.add(types.InlineKeyboardButton("Открыть видео", url='https://rutube.ru/video/adacc1aae23f76bf201504891ab0da00/'))
             text = (
                 "Прослушайте историю создания Демидовской площади и ответьте на "
                 "вопрос: Что помогло справиться с проклятьем Демидова?"
